@@ -9,6 +9,29 @@
 - 编译器对高级语言的优化会导致一些指令发生重排，因为编译器是以单线程进行优化的
 - 可见性的问题，对于cpu会同时执行尽可能多的指令然后返回如果不存在强依赖就会被cpu打乱顺序
 
+```c
+#include "thread.c"
+#define N 100000
+
+long sum = 0;
+
+void Tsum()
+{
+    for (int i = 0; i < N; i++)
+    {
+        sum++;
+    }
+}
+
+int main()
+{
+    create(Tsum);
+    create(Tsum);
+    join();
+    printf("%ld\n", sum);
+}
+```
+这段代码在o1的编译结果会生成100000在o2的编译结果是200000这就是编译器会并发程序产生的影响
 
 ### perterson协议
 
@@ -22,3 +45,32 @@ perterson协议是用来解决并发而发明的最早的通俗易懂的协议�
 
 
 这种精妙的流程能保证每一个状态都是线程安全的
+
+```c
+void TA()
+{
+    while (1)
+    {
+        x = 1;
+        ture = B;
+        while (y && ture == B);
+        critical_section();
+        x = 0;
+    }
+    
+}
+
+void TB()
+{
+    while (1)
+    {
+        y = 1;
+        ture = A;
+        while(x && ture == A);
+        critical_section();
+        y = 0;
+    }
+    
+}
+```
+上述程序可以实现线程安全但是如何证明呢? 这个时候只能使用model chcker使用代码来画状态机将所有的状态计算出来
