@@ -1,6 +1,11 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "types.h": "c"
+        "types.h": "c",
+        "dirent.h": "c",
+        "typeinfo": "c",
+        "type_traits": "cpp",
+        "cstdlib": "c",
+        "ctype.h": "c"
     }
 }

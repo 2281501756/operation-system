@@ -4,6 +4,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct pstreeNode
+{
+    char *name;
+    char *pid;
+    int tid;
+    struct pstreeNode *bro;
+    struct pstreeNode *child;
+} node;
+
+
+
 void trim(char *str)
 {
     int start = 0, end = strlen(str) - 1;
@@ -38,6 +49,12 @@ void readStatusFile(const char *statusfile)
             char *name = line + 5;
             trim(name);
             printf("%s\n", name);
+        }
+        if (strncmp(line, "PPid:", 5) == 0)
+        {
+            char *ppid = line + 5;
+            trim(ppid);
+            printf("%s\n", ppid);
         }
     }
     fclose(file);
